@@ -72,7 +72,6 @@ def validate_time():
     else:
         hours = int(hours)
         if hours > 23 or hours < 0:
-        # if hours not in range(24)
             hours_error = "Hour value out of range (0-23)"
             hours = ""
     
@@ -81,7 +80,6 @@ def validate_time():
         minutes = ""
     else:
         minutes = int(minutes)
-        # if minutes not in range(60)
         if minutes > 59 or minutes < 0:
             minutes_error = "Minutes value out of range (0 - 59)"
             minutes = ""
