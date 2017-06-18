@@ -36,6 +36,38 @@ time_form = """
     </form>
 """
 
+def is_integer(num):
+    try:
+        int(num)
+        return True
+    except ValueError:
+        return False
+
+def validate_hours(hours):
+    hours, hours_error = hours, ""
+    if not is_integer(hours):
+            hours_error = "Not a valid integer"
+            hours = ""
+    else:
+        hours = int(hours)
+        if hours not in range(24):
+            hours_error = "Hour value out of range (0-23)"
+            hours = ""
+    return hours, hours_error
+
+def validate_minutes(minutes):
+    minutes, minutes_error = minutes, ""
+    if not is_integer(minutes):
+        minutes_error = "Not a valid integer"
+        minutes = ""
+    else:
+        minutes = int(minutes)
+        if minutes not in range(60):
+            minutes_error = "Minutes value out of range (0 - 59)"
+            minutes = ""
+    return minutes, minutes_error
+
+
 @app.route("/")
 def index():
     return form
@@ -45,52 +77,20 @@ def hello():
     first_name = request.form["first_name"]
     return "<h1>Hello, " + first_name + "!</h1>"
 
-@app.route("/validate-time")
-def display_time_form():
-    return time_form.format(hours="", hours_error="", minutes="", minutes_error="")
 
-
-def is_integer(num):
-    try:
-        int(num)
-        return True
-    except ValueError:
-        return False
-        
-
-@app.route("/validate-time", methods=["POST"])
+@app.route("/validate-time", methods=["GET", "POST"])
 def validate_time():
-    hours = request.form['hours']
-    minutes = request.form['minutes']
-
-    hours_error = ""
-    minutes_error = ""
-
-    if not is_integer(hours):
-        hours_error = "Not a valid integer"
-        hours = ""
-    else:
-        hours = int(hours)
-        if hours > 23 or hours < 0:
-            hours_error = "Hour value out of range (0-23)"
-            hours = ""
+    if request.method == "GET":
+         return time_form.format(hours="", hours_error="", minutes="", minutes_error="")
     
-    if not is_integer(minutes):
-        minutes_error = "Not a valid integer"
-        minutes = ""
-    else:
-        minutes = int(minutes)
-        if minutes > 59 or minutes < 0:
-            minutes_error = "Minutes value out of range (0 - 59)"
-            minutes = ""
-
+    if request.method == "POST":
+        hours, hours_error = validate_hours(request.form["hours"])
+        minutes, minutes_error = validate_minutes(request.form["minutes"])
     
-    if not minutes_error and not hours_error:
-        return "Success!"
-    else:
-        return time_form.format(hours_error=hours_error, minutes_error=minutes_error, hours=hours, minutes=minutes)
-
-
+        if not minutes_error and not hours_error:
+            return "Success!"
+        else:
+            return time_form.format(hours_error=hours_error, minutes_error=minutes_error, hours=hours, minutes=minutes)
 
 
 
