@@ -1,33 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %} {% block content %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>TODOs</title>
-</head>
+<h1>
+    TODOs
+</h1>
+<form method="POST">
+    <label>
+                New Task:
+                <input type="text" name="task">
+            </label>
+    <input type="submit" value="Add Task">
+</form>
+<hr> {% if tasks|length == 0 %}
+<p>No tasks yet</p>
 
-<body>
-    <h1TODOs>
-        </h1>
-        <form method="POST">
-            <label>
-            New Task:
-            <input type="text" name="task">
-        </label>
-            <input type="submit" value="Add Task">
-        </form>
-        <hr> {% if tasks|length == 0 %}
-        <p>No tasks yet</p>
-
-        {% else %}
-        <ul>
-            {% for task in tasks %}
-            <li>{{task}}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-</body>
-
-</html>
+{% else %}
+<ul>
+    {% for task in tasks %}
+    <li>{{task}}</li>
+    {% endfor %}
+</ul>
+{% endif %} {% endblock %}
