@@ -111,5 +111,18 @@ def valid_time():
     return "<h1>You submitted {0}.<br> Thanks for submitting a valid time!</h1>".format(time)
 
 
+tasks = []
+
+@app.route("/todos", methods=["GET", "POST"])
+def todos():
+
+    if request.method == "POST":
+        task = request.form["task"]
+        tasks.append(task)
+        
+    template = jinja_env.get_template("todos.html")
+    return template.render(tasks=tasks)
+
+
 
 app.run()
